@@ -1,4 +1,5 @@
 .packages_init = c(
+  "stats",
   "lubridate", "stringr", "ggplot2",
   "plotly", "purrr", "future", "drake", "renv",
   "svglite", "jsonlite", "readr", "rlang",
