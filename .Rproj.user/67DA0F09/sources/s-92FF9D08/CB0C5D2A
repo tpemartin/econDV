@@ -1,0 +1,25 @@
+{
+    "id": "CB0C5D2A",
+    "path": "~/Github/econDV/R/initiate.R",
+    "project_path": "R/initiate.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1596110615686.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "cursorPosition": "52,0",
+        "scrollLine": "52",
+        "docOutlineVisible": "1"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1596110636,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1596110636792,
+    "read_only": false,
+    "read_only_alternatives": []
+}
