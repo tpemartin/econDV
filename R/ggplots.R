@@ -14,7 +14,7 @@ usethis::use_package("glue")
 #' in ggplot2
 #' @export
 #'
-#' @examples
+#' @examples none
 get_break_labels= function(dateSeries, dY=1, labeltype="yy"){
 
   dateSeries %>%
@@ -109,7 +109,7 @@ get_break_labels= function(dateSeries, dY=1, labeltype="yy"){
 #' ymax=Inf. If xmin/xmax is not date class, will be converted accordingly.
 #' @export
 #'
-#' @examples
+#' @examples none
 gen_df_geom_rect <- function(df_x){
   df_x$ymin = rep(-Inf, nrow(df_x))
   df_x$ymax = rep(Inf, nrow(df_x))
@@ -125,7 +125,7 @@ gen_df_geom_rect <- function(df_x){
 #' @return An integer vector, showing the rank, 1 means the larges/highest.
 #' @export
 #'
-#' @examples
+#' @examples none
 get_rankNumber <- function(series){
   series %>%
     sort.int(

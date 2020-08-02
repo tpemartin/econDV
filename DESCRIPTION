@@ -16,5 +16,6 @@ Imports:
     glue,
     sysfonts,
     showtext,
-    ggplot2
+    ggplot2,
+    rdbnomics
 RoxygenNote: 7.1.1

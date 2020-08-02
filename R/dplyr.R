@@ -6,7 +6,7 @@
 #' @return A logical vector. TRUE if fits ALL patterns.
 #' @export
 #'
-#' @examples
+#' @examples none
 str_detect_all= function(series, regex){
   nConds = stringr::str_count(regex,"\\|")+1
   stringr::str_count(

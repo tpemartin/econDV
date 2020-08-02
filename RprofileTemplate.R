@@ -6,7 +6,7 @@
   "tidyr", "showtext", "rprojroot", "fst",
   "xml2", "rvest", "rdbnomics", "dplyr", "magick",
   "sf", "osmdata", "grDevices", "colorspace",
-  "shinyjs", "devtools"
+  "shinyjs", "devtools", "clipr"
 )
 invisible(purrr::map(
   .packages_init,
