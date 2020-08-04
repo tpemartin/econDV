@@ -1,7 +1,7 @@
 .packages_init = c(
   "stats",
   "lubridate", "stringr", "ggplot2",
-  "plotly", "purrr", "future", "drake", "renv",
+  "plotly", "purrr", "future", "drake", #"renv",
   "svglite", "jsonlite", "readr", "rlang",
   "tidyr", "showtext", "rprojroot", "fst",
   "xml2", "rvest", "rdbnomics", "dplyr", "magick",

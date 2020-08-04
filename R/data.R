@@ -14,3 +14,30 @@ get_rdb <- function(rdb0, queryString){
     query=queryString)
   df_0
 }
+
+
+# helpers -----------------------------------------------------------------
+
+
+gen_ISOcountry = function(){
+  countryISO_en <-
+    jsonlite::fromJSON("https://raw.githubusercontent.com/flyeven/country-code-zh-TW/master/country-code.json")
+
+  countryISO_zhTW <-
+    jsonlite::fromJSON("https://raw.githubusercontent.com/flyeven/country-code-zh-TW/master/country-code.zh-TW.json")
+
+  library(dplyr)
+  countryISO_en %>%
+    rename(
+      en=name
+    ) %>%
+    left_join(
+      countryISO_zhTW %>%
+        rename(
+          zh=name
+        ),
+      by="code"
+    ) -> ISOcountry
+
+  ISOcountry
+}
