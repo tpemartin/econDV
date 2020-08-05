@@ -3,7 +3,7 @@
   "lubridate", "stringr", "ggplot2",
   "plotly", "purrr", "future", "drake", #"renv",
   "svglite", "jsonlite", "readr", "rlang",
-  "tidyr", "showtext", "rprojroot", "fst",
+  "tidyr", "showtext", "rprojroot", "fst", "magrittr"
   "xml2", "rvest", "rdbnomics", "dplyr", "magick",
   "sf", "osmdata", "grDevices", "colorspace",
   "shinyjs", "devtools", "clipr"
