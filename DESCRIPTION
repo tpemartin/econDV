@@ -17,5 +17,6 @@ Imports:
     sysfonts,
     showtext,
     ggplot2,
-    rdbnomics
+    rdbnomics,
+    SOAR
 RoxygenNote: 7.1.1
