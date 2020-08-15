@@ -56,10 +56,15 @@ purl_drakePlan <- function(filename, plan_name){
     # Rmdlines %>%
     #   get_drakeBody(oneSlice)
     drakeBody <- c()
+    makecondition <- c()
     for(.x in 1:nDrakeObjs){
       oneSlice <- drakeLocations[.x,]
       Rmdlines %>%
         get_drakeBody(oneSlice) -> oneSliceBody
+      if(oneSlice$object=="makecondition"){
+        makecondition <- oneSliceBody
+        next
+      }
       oneSliceBody %>% length() -> lastWhich
       oneSliceBody[[lastWhich]] =
         ifelse(
@@ -98,6 +103,8 @@ purl_drakePlan <- function(filename, plan_name){
     makePlan <- c(
       "# make plan -----------------",
       "mk_{plan_name} %<-% {",
+      makecondition,
+      "",
       "  drake::make({plan_name})",
       "}",
       ""
