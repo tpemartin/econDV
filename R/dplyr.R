@@ -12,3 +12,20 @@ str_detect_all= function(series, regex){
   stringr::str_count(
     series,regex)==nConds
 }
+
+#' Add meta data to a data frame
+#'
+#' @param df A data frame
+#' @param meta A list of attributes
+#'
+#' @return
+#' @export
+#'
+#' @examples addMeta(df, list("source"="WDI", "units"="millions"))
+addMeta <- function(df, meta) {
+  for (.x in seq_along(meta)) {
+    attr(df, names(meta)[[.x]]) <- meta[[.x]]
+  }
+  return(df)
+}
+

@@ -14,6 +14,31 @@
 purl_drakePlan <- function(filename, plan_name){
   readLines(filename) -> Rmdlines
 
+  frontmatterParams={
+    knitr::knit_params(Rmdlines) -> paramsList
+    if(length(paramsList)!=0){
+      paramsList %>%
+        map_chr(
+          ~{
+            glue::glue(c('{.x$name}="{.x$value}"'))
+          }
+        ) -> paramsString
+      paramsString %>%
+        paste0(
+          collapse = ","
+        ) %>%
+        paste0(
+          "params <- list(",
+          .,
+          ")"
+        ) -> paramsSetupString
+    } else {
+      paramsSetupString="# no params in the frontmatter"
+    }
+
+    paramsSetupString
+  }
+
   # find drake information
   {
     Rmdlines %>%
@@ -102,7 +127,9 @@ purl_drakePlan <- function(filename, plan_name){
     )
     makePlan <- c(
       "# make plan -----------------",
-      "mk_{plan_name} %<-% {",
+      "mk_{plan_name} = function(){",
+      frontmatterParams,
+      "",
       makecondition,
       "",
       "  drake::make({plan_name})",
@@ -120,12 +147,26 @@ purl_drakePlan <- function(filename, plan_name){
       )
   }
 
+
+  plan_nameExtract=stringr::str_extract(plan_name,"(?<=/)[[:alnum:]_\\.]+$")
+  plan_nameExtract=stringr::str_replace(plan_nameExtract,"\\.R","")
+  plan_name0=ifelse(is.na(plan_nameExtract), plan_name, plan_nameExtract)
+  plan_name0=stringr::str_replace(plan_name0,".R","")
+  planfilepath=
+    ifelse(
+      is.na(plan_nameExtract),
+      "",
+      stringr::str_extract(plan_name,
+                           glue::glue("[:graph:]+(?={plan_nameExtract})"))
+    )
   drakeScripts %>%
-    stringr::str_replace_all("\\{plan_name\\}", plan_name) ->
+    stringr::str_replace_all("\\{plan_name\\}", plan_name0) ->
     drakeScriptsFinal
   writeLines(
     drakeScriptsFinal,
-    con=paste0(plan_name,".R")
+    con=paste0(
+      stringr::str_replace(plan_name,"\\.R",""),
+      ".R")
   )
 
   invisible(drakeScriptsFinal)
