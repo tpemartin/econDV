@@ -18,7 +18,7 @@ purl_drakePlan <- function(filename, plan_name){
     knitr::knit_params(Rmdlines) -> paramsList
     if(length(paramsList)!=0){
       paramsList %>%
-        map_chr(
+        purrr::map_chr(
           ~{
             glue::glue(c('{.x$name}="{.x$value}"'))
           }
@@ -183,6 +183,44 @@ purl_drakePlan <- function(filename, plan_name){
 #' # create_source_plan()
 #'
 #' planPath ="/Users/martin/Github/course-HS-society-and-citizen/plans"
+#' Create Rmd template that can generate drake plan scripts
+#'
+#' @param planname A character.
+#' @param title A character. (if null, default=planname)
+#' @param root A chracter. (if null, default=getwd())
+#'
+#' @return
+#' @export
+#'
+#' @examples none
+create_planRmd <- function(planname, title=NULL, root=NULL){
+
+  # readLines(
+  #   "/Users/martin/Github/econDV/document/planRmdTemplate.Rmd"
+  # ) -> planRmdTemplate
+  #
+  # usethis::use_data(planRmdTemplate,internal=T, overwrite=T)
+
+  library(dplyr)
+  planRmdTemplate %>%
+    stringr::str_replace_all(
+      c("\\{title\\}"=ifelse(is.null(title),planname,title),
+        "\\{planname\\}"=planname,
+        "\\{filename\\}"=
+          ifelse(is.null(root),
+                 file.path(getwd(),
+                           paste0(planname,".Rmd")),
+                 file.path(root,
+                           paste0(planname,".Rmd")
+                                  )))
+    ) -> myRmdLines
+
+  writeLines(
+    myRmdLines,
+    paste0(planname,".Rmd")
+  )
+}
+
 #' source_plan <- create_source_plan()
 #'
 create_source_plan <- function(){
@@ -265,7 +303,7 @@ get_drakeBody = function(Rmdlines, oneSlice){
     max() -> whichTargetEnds
   targetBody <- scriptBlock[1:whichTargetEnds]
   targetBody[[whichTargetEnds]] %>%
-    str_remove_all("\\s") -> targetBody[[whichTargetEnds]]
+    stringr::str_remove_all("\\s") -> targetBody[[whichTargetEnds]]
   targetBody
 }
 

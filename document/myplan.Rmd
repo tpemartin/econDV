@@ -1,0 +1,89 @@
+---
+title: "{title}"
+output: html_document
+params:
+  planpath: "plan" #  "{planpath}"
+  planname: "myplan" # "{planname}"
+---
+
+```{r setup, include=FALSE, drake=F}
+knitr::opts_chunk$set(echo = TRUE)
+library(drake)
+library(purrr)
+library(econDV)
+purl_drakePlan(
+  filename="/Users/martin/Github/econDV/document/myplan.Rmd",
+  plan_name="myplan"
+)
+```
+
+## makecondition
+
+```{r makecondition}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+## data
+
+```{r downloaddata}
+downloaddata = {
+  library(readr)
+  taiwanStatistics <- read_csv(
+    file_in("https://www.dropbox.com/s/d5v23cab2b74y5i/Taiwan%E5%9C%8B%E6%B0%91%E6%89%80%E5%BE%97%E7%B5%B1%E8%A8%88%E5%B8%B8%E7%94%A8%E8%B3%87%E6%96%99.csv?dl=1"),
+locale = locale(encoding = "BIG5"), skip = 3)
+  taiwanStatistics
+}
+```
+
+```{r dataReady}
+dataReady = {
+  downloaddata %>%
+  rename(
+    "年"="X1"
+  ) %>%
+  mutate(
+    across(
+      everything(),
+      as.numeric
+    )
+  )
+}
+
+```
+
+
+## graph
+
+```{r gg_taiwanEconomicGrowth}
+gg_taiwanEconomicGrowth = {
+  dataReady %>%
+    ggplot()+
+    geom_line(
+      aes(
+        x=年, y=`經濟成長(%)`
+      )
+    )
+}
+```
+
+```{r}
+# this chunk will not be part of drake plan since no label
+gg_taiwanEconomicGrowth
+```
+
+## export
+
+```{r save_gg_taiwanEconomicGrowth}
+save_gg_taiwanEconomicGrowth = {
+  ggsave(
+    file_out("taiwanEconomicsGrowth.svg"),
+    gg_taiwanEconomicGrowth,
+    width=8,
+    height=5
+  )
+  
+}
+```
+

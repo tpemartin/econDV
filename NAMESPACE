@@ -3,7 +3,7 @@
 export("%=%")
 export(addMeta)
 export(clip_planWrapper)
-export(create_source_plan)
+export(create_planRmd)
 export(dv_setup)
 export(gen_df_geom_rect)
 export(get_break_labels)

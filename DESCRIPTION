@@ -18,5 +18,6 @@ Imports:
     showtext,
     ggplot2,
     rdbnomics,
-    SOAR
+    SOAR,
+    downloader
 RoxygenNote: 7.1.1

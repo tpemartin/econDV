@@ -2,21 +2,10 @@
 % Please edit documentation in R/drake.R
 \name{create_source_plan}
 \alias{create_source_plan}
-\title{Create source_plan function source file under planPath}
+\title{source_plan <- create_source_plan()}
 \usage{
 create_source_plan()
 }
-\value{
-A function that source an R script under planPath
-}
 \description{
-Create source_plan function source file under planPath
-}
-\examples{
-# # NOT RUN. produce error
-# create_source_plan()
-
-planPath ="/Users/martin/Github/course-HS-society-and-citizen/plans"
 source_plan <- create_source_plan()
-
 }

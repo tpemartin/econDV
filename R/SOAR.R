@@ -20,6 +20,15 @@
     rlang::eval_tidy(
       todo
     )
+  } else {
+    todo1 <- rlang::expr(
+      {
+        SOAR::Store(!!obj)
+      }
+    )
+    rlang::eval_tidy(
+      todo1
+    )
   }
 
 }
