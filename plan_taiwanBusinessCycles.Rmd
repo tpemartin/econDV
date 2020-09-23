@@ -1,7 +1,15 @@
 ---
 title: "plan_taiwanBusinessCycles"
 output: html_document
+params:
+  key: "公Aa-Ⅳ-1"
+  memberGmails: ["mary@gm.ntpu.edu.tw","cook@gmail.com"]
 ---
+
+key請由課綱選：
+新課綱：<https://docs.google.com/document/d/1o8UQIpy6GFqCgfUxc47fqyAPuEYrk3FLd7bB1EhYMVg>
+
+memberGmails: 為組員進入google classroom的gmail
 
 ```{r setup, include=FALSE, drake=F}
 knitr::opts_chunk$set(echo = TRUE)

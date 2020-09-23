@@ -1,0 +1,95 @@
+---
+title: "plan_taiwanBusinessCycles"
+output: html_document
+params:
+  key: "公Aa-Ⅳ-1"
+  memberGmails: ["mary@gm.ntpu.edu.tw","cook@gmail.com"]
+---
+
+key請由課綱選：
+新課綱：<https://docs.google.com/document/d/1o8UQIpy6GFqCgfUxc47fqyAPuEYrk3FLd7bB1EhYMVg>
+
+memberGmails: 為組員進入google classroom的gmail
+
+```{r setup, include=FALSE, drake=F}
+knitr::opts_chunk$set(echo = TRUE, eval=F)
+library(drake)
+library(econDV)
+library(dplyr)
+# 不同plan, new_cache裡的名字要不同
+cacheNew <- drake::new_cache('.cachename')
+options(rstudio_drake_cache = cacheNew$storr)
+
+purlActiveRmd_thenPlanMake()
+
+```
+
+## makecondition
+
+```{r makecondition}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+## data
+
+```{r downloaddata}
+downloaddata = {
+  library(readr)
+  taiwanStatistics <- read_csv(
+    file_in("https://www.dropbox.com/s/d5v23cab2b74y5i/Taiwan%E5%9C%8B%E6%B0%91%E6%89%80%E5%BE%97%E7%B5%B1%E8%A8%88%E5%B8%B8%E7%94%A8%E8%B3%87%E6%96%99.csv?dl=1"),
+locale = locale(encoding = "BIG5"), skip = 3)
+  taiwanStatistics
+}
+```
+
+```{r dataReady}
+dataReady = {
+  downloaddata %>%
+  rename(
+    "年"="X1"
+  ) %>%
+  mutate(
+    across(
+      everything(),
+      as.numeric
+    )
+  )
+}
+
+```
+
+
+## graph
+
+```{r gg_taiwanEconomicGrowth}
+gg_taiwanEconomicGrowth = {
+  dataReady %>%
+    ggplot()+
+    geom_line(
+      aes(
+        x=年, y=`經濟成長(%)`
+      )
+    )
+}
+```
+
+```{r}
+gg_taiwanEconomicGrowth
+```
+
+## export
+
+```{r save_gg_taiwanEconomicGrowth}
+save_gg_taiwanEconomicGrowth = {
+  ggsave(
+    file_out("taiwanEconomicsGrowth.svg"),
+    gg_taiwanEconomicGrowth,
+    width=8,
+    height=5
+  )
+  
+}
+```
+

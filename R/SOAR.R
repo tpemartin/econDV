@@ -10,7 +10,7 @@
 `%=%` <- function(obj, expr){
   obj=rlang::ensym(obj)
   expr=rlang::enexpr(expr)
-  if(!exists(as_name(obj))){
+  if(!exists(rlang::as_name(obj))){
     todo <- rlang::expr(
       {
         !!obj <- !!expr

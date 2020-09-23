@@ -1,4 +1,35 @@
 ###
+#' Purl active Rmd into a drake plan R script, named "plan_{activeRmdName}.R", then make the plan.
+#'
+#' @return
+#' @export
+#'
+#' @examples purlActiveRmd_thenPlanMake()
+purlActiveRmd_thenPlanMake <- function(){
+  rstudioapi::getSourceEditorContext() -> activeSource
+  activeSource$path -> activeRmd
+  # normalizePath(activeRmd) -> activeRmd
+  # stringr::str_remove(activeRmd, rootPath) ->
+  #   html2open
+  webDirRoot <- dirname(activeRmd)
+  activeRmdBase <- basename(activeRmd)
+  drakePlanname <-
+    paste0("plan_",
+           stringr::str_remove(activeRmdBase,"\\.[rR][mM][dD]$"))
+  purl_drakePlan(activeRmd, drakePlanname)
+  drakefilename <-
+    file.path(
+      webDirRoot,paste0(drakePlanname,".R")
+    )
+  source(drakefilename)
+  makeName <-
+    paste0(
+      "mk_",drakePlanname
+    )
+  do.call(makeName, list())
+
+}
+
 #' Purl Rmd to a drake plan R script
 #'
 #' @description All R chunks with chunk names without drake=F will be purled to
@@ -64,7 +95,8 @@ purl_drakePlan <- function(filename, plan_name){
         whichSeq[.] %>%
         min() -> whichDrakeLineEnds[[.x]]
     }
-    tibble(
+
+    tidyr::tibble(
       object=drakeObjects,
       begin=whichHasDrakeObjects+1,
       end=whichDrakeLineEnds-1
@@ -86,6 +118,8 @@ purl_drakePlan <- function(filename, plan_name){
       oneSlice <- drakeLocations[.x,]
       Rmdlines %>%
         get_drakeBody(oneSlice) -> oneSliceBody
+      oneSliceBody[[1]] %>%
+        stringr::str_replace("<-","=") -> oneSliceBody[[1]]
       if(oneSlice$object=="makecondition"){
         makecondition <- oneSliceBody
         next
@@ -132,10 +166,17 @@ purl_drakePlan <- function(filename, plan_name){
       "",
       makecondition,
       "",
-      "  drake::make({plan_name})",
+      # "mkEnv=rlang::current_env()",
+      "library(drake)",
+      "make({plan_name}, cache=cacheNew)",
+      "}",
+      "",
+      "vis_plan <- function(){",
+      "vis_drake_graph({plan_name}, cache = cacheNew)",
       "}",
       ""
     )
+
 
     # assemble
     drakeScripts <-
@@ -212,7 +253,7 @@ create_planRmd <- function(planname, title=NULL, root=NULL){
                            paste0(planname,".Rmd")),
                  file.path(root,
                            paste0(planname,".Rmd")
-                                  )))
+                 )))
     ) -> myRmdLines
 
   writeLines(
@@ -224,10 +265,10 @@ create_planRmd <- function(planname, title=NULL, root=NULL){
 #' source_plan <- create_source_plan()
 #'
 create_source_plan <- function(){
-    stopifnot(
-      "Missing planPath. Please created the definition object planPath."=
-        exists("planPath", envir = globalenv())
-    )
+  stopifnot(
+    "Missing planPath. Please created the definition object planPath."=
+      exists("planPath", envir = globalenv())
+  )
   source_functional(planPath)
 }
 
@@ -306,4 +347,3 @@ get_drakeBody = function(Rmdlines, oneSlice){
     stringr::str_remove_all("\\s") -> targetBody[[whichTargetEnds]]
   targetBody
 }
-
