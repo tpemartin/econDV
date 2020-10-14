@@ -18,7 +18,7 @@
       }
     )
     rlang::eval_tidy(
-      todo
+      todo, env = rlang::caller_env()
     )
   } else {
     todo1 <- rlang::expr(
@@ -27,7 +27,7 @@
       }
     )
     rlang::eval_tidy(
-      todo1
+      todo1, env = rlang::caller_env()
     )
   }
 
