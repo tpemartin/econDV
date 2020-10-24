@@ -1,0 +1,20 @@
+---
+title: "my plot"
+drake_cache: ".plot"
+output: output_format
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r makecondition}
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(econDV)
+econDV::setup_chinese(need2Knit = F)
+```
+
