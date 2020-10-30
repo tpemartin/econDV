@@ -1,60 +1,84 @@
 ---
-title: "plan_taiwanBusinessCycles"
+title: "台灣景氣循環"
+drake_cache: ".chart1_sunny" # 請取一個你認為幾乎不會有人和你一樣的cache名稱
 output: html_document
 params:
-  key: "公Aa-Ⅳ-1"
-  memberGmails: ["mary@gm.ntpu.edu.tw","cook@gmail.com"]
+  key: "公Aa-Ⅳ-1" # 課綱編號，多個可用 ["key1", "key2"]
+  memberNames: ["Mary", "cook"] # 組員姓名
+  memberIds: ["410888292", "410772938"] # 學號
+  imgPreName: "taiwanEconomicsGrowth.svg" # ggsave時的檔名
+  imgPostName: "" # svg後製時的檔名
 ---
 
 key請由課綱選：
 新課綱：<https://docs.google.com/document/d/1o8UQIpy6GFqCgfUxc47fqyAPuEYrk3FLd7bB1EhYMVg>
 
-memberGmails: 為組員進入google classroom的gmail
+  * 上傳時請交你的「Rmd檔」及「ggsave的SVG檔」，若有後製也請交上後製的SVG。由一個組員上傳到google classroom的作業繳交處。（通常是這次作業訊息公告的位置）
+  
+  * 作圖資料：
+    * 若資料本身是公開資料「且」可經網址形式直接寫在程式中下載則無需另附資料。否則
+    * 將資料上傳到本課程的分享google drive folder: <https://drive.google.com/drive/folders/19_B9LnjR4g9M8VPmbUuf4UjXXxC_JKhm?usp=sharing> 讓全班都可以看得到你的檔案 （注意，這和作業邀交處是不同的。）
+    * 上傳後，請點你檔案按滑鼠右鍵，選「get link」得到你資料檔的分享連結。
+    * 程式要引入此資料處，請依照下面datadownload code chunk去引入資料。
+    
+總結：
+
+  * 上傳到Google classroom作業繳交處：Rmd, SVG
+  
+  * 上傳到分享Google Drive Folder: 資料檔 （若公開資料且程式可下載則無需上傳）
+    
+***
+  
+  * params裡的訊息若無後製SVG可不寫imgPostName，其他都要填。
+  
+  * 圖片一定要有Title, subtitle, 及資料來源。
+
 
 ```{r setup, include=FALSE, drake=F}
 knitr::opts_chunk$set(echo = TRUE, eval=F)
 library(drake)
 library(econDV)
 library(dplyr)
-# 不同plan, new_cache裡的名字要不同
-cacheNew <- drake::new_cache('.cachename')
-options(rstudio_drake_cache = cacheNew$storr)
-
-purlActiveRmd_thenPlanMake()
 
 ```
 
 ## makecondition
 
 ```{r makecondition}
-library(readr)
 library(dplyr)
+library(tidyr)
+library(stringr)
+library(googledrive)
+library(readr)
 library(ggplot2)
+library(econDV)
+econDV::setup_chinese(need2Knit = F)
+rprojroot::is_rstudio_project -> .pj
+.pj$make_fix_file() -> root
 ```
 
 ## data
 
-```{r downloaddata}
-downloaddata = {
-  library(readr)
-  taiwanStatistics <- read_csv(
-    file_in("https://www.dropbox.com/s/d5v23cab2b74y5i/Taiwan%E5%9C%8B%E6%B0%91%E6%89%80%E5%BE%97%E7%B5%B1%E8%A8%88%E5%B8%B8%E7%94%A8%E8%B3%87%E6%96%99.csv?dl=1"),
-locale = locale(encoding = "BIG5"), skip = 3)
-  taiwanStatistics
-}
-```
+範例情境： 
 
-```{r dataReady}
-dataReady = {
-  downloaddata %>%
-  rename(
-    "年"="X1"
-  ) %>%
-  mutate(
-    across(
-      everything(),
-      as.numeric
-    )
+  * 資料檔分享連結：<https://drive.google.com/file/d/18L7z13xz_Rn_bYcQBhZR9wLxGZFgeO9e/view?usp=sharing>
+  
+  * 要下載回project folder, 並名命為'graph4week1.csv'。（請確認你makecondition有.root定義）
+  
+  * 用readr::read_csv讀入資料。
+
+```{r datadownload}
+datadownload = {
+  # 下載google drive檔案 share link 到本機project folder, 本以graph4week.csv名稱儲存
+  googledrive::drive_download(
+    file_in("https://drive.google.com/file/d/18L7z13xz_Rn_bYcQBhZR9wLxGZFgeO9e/view?usp=sharing"),
+    path=file.path(.root(),"graph4week1.csv"),
+    overwrite = T
+  )
+  
+  # 自本機project folder裡引入graph4week.csv為graph4week1 data frame物件
+  graph4week1 <- read_csv(
+    file.path(.root(),"graph4week1.csv")
   )
 }
 
@@ -63,33 +87,17 @@ dataReady = {
 
 ## graph
 
-```{r gg_taiwanEconomicGrowth}
-gg_taiwanEconomicGrowth = {
-  dataReady %>%
-    ggplot()+
-    geom_line(
-      aes(
-        x=年, y=`經濟成長(%)`
-      )
-    )
-}
-```
-
-```{r}
-gg_taiwanEconomicGrowth
-```
 
 ## export
 
-```{r save_gg_taiwanEconomicGrowth}
-save_gg_taiwanEconomicGrowth = {
+```{r save_ggplot}
+save_ggplot = {
   ggsave(
-    file_out("taiwanEconomicsGrowth.svg"),
-    gg_taiwanEconomicGrowth,
+    file.path(.root(), "taiwanEconomicsGrowth.svg"),
     width=8,
     height=5
   )
-  
 }
 ```
 
+  * taiwanEconomicsGrowth.svg及本Rmd檔一起上傳作業繳交處

@@ -1,7 +1,7 @@
 Package: econDV
 Type: Package
 Title: 國立臺北大學資料視覺化課程套件
-Version: 0.1.01
+Version: 0.1.2
 Author: person("LIN", "Martin", email ="mtlin@gm.ntpu.edu.tw", role = c("aut", "cre"))
 Maintainer: Martin Lin <mtlin@gm.ntpu.edu.tw>
 Description: 設定課程操作環境、同時提供資料視覺化的方便小工具
