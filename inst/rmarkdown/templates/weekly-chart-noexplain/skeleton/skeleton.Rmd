@@ -1,36 +1,18 @@
 ---
 title: "台灣景氣循環"
-drake_cache: ".chart1_sunny" # 請取一個你認為幾乎不會有人和你一樣的cache名稱
+drake_cache: ".chart1_sunny"
 output: html_document
 params:
-  key: "公Aa-Ⅳ-1" # 課綱編號，多個可用 ["key1", "key2"]
-  memberNames: ["Mary", "cook"] # 組員姓名
-  memberIds: ["410888292", "410772938"] # 學號
-  imgPreName: "taiwanEconomicsGrowth.svg" # ggsave時的檔名
-  imgPostName: "" # svg後製時的檔名
+  key: "公Aa-Ⅳ-1" 
+  memberNames: ["Mary", "cook"]
+  memberIds: ["410888292", "410772938"] 
+  imgPreName: "taiwanEconomicsGrowth.svg" 
+  imgPostName: "" 
 ---
 
 key請由課綱選：
 新課綱：<https://docs.google.com/document/d/1o8UQIpy6GFqCgfUxc47fqyAPuEYrk3FLd7bB1EhYMVg>
 
-  * 上傳時請交你的「Rmd檔」及「ggsave的SVG檔」，若有後製也請交上後製的SVG。由一個組員上傳到google classroom的作業繳交處。（通常是這次作業訊息公告的位置）
-  
-  * 作圖資料：
-    * 若資料本身是公開資料「且」可經網址形式直接寫在程式中下載則無需另附資料。否則
-    * 將資料上傳到本課程的分享google drive folder: <https://drive.google.com/drive/folders/19_B9LnjR4g9M8VPmbUuf4UjXXxC_JKhm?usp=sharing> 讓全班都可以看得到你的檔案 （注意，這和作業邀交處是不同的。）
-    * 上傳後，請點你檔案按滑鼠右鍵，選「get link」得到你資料檔的分享連結。
-    * 程式要引入此資料處，請依照下面datadownload code chunk去引入資料。
-    
-總結：
-
-  * 上傳到Google classroom作業繳交處：Rmd, SVG
-  
-  * 上傳到分享Google Drive Folder: 資料檔 （若公開資料且程式可下載則無需上傳）
-    
-***
-  
-  * params裡的訊息若無後製SVG可不寫imgPostName，其他都要填。
-  
   * 圖片一定要有Title, subtitle, 及資料來源。
 
 
@@ -58,14 +40,6 @@ rprojroot::is_rstudio_project -> .pj
 ```
 
 ## data
-
-範例情境： 
-
-  * 資料檔分享連結：<https://drive.google.com/file/d/18L7z13xz_Rn_bYcQBhZR9wLxGZFgeO9e/view?usp=sharing>
-  
-  * 要下載回project folder, 並名命為'graph4week1.csv'。（請確認你makecondition有.root定義）
-  
-  * 用readr::read_csv讀入資料。
 
 ```{r datadownload}
 datadownload = {
@@ -100,4 +74,3 @@ save_ggplot = {
 }
 ```
 
-  * taiwanEconomicsGrowth.svg及本Rmd檔一起上傳作業繳交處
