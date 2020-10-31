@@ -36,7 +36,13 @@ library(ggplot2)
 library(econDV)
 econDV::setup_chinese(need2Knit = F)
 rprojroot::is_rstudio_project -> .pj
-.pj$make_fix_file() -> root
+.pj$make_fix_file() -> .root
+
+imageFolder <- file.path(.root(),"img")
+dataFolder <- file.path(.root(),"data")
+
+if(!dir.exists(imageFolder)) dir.create(imageFolder)
+if(!dir.exists(dataFolder)) dir.create(dataFolder)
 ```
 
 ## data
@@ -70,14 +76,11 @@ myggplot = {
 ## export
 
 ```{r save_ggplot}
-save_ggplot <- {
-  destfile <- file.path(root(), "img/myPlot.svg")
-  destDir <- dirname(destfile)
-  if (!dir.exists(destDir)) dir.create(destDir)
+save_ggplot = {
 
   ggsave(
     plot=myggplot,
-    filename=destfile,
+    filename=file.path(imageFolder, "myPlot.svg"),
     width = 8,
     height = 5
   )

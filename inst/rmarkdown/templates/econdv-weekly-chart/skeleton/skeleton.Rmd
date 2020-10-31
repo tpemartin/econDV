@@ -54,7 +54,13 @@ library(ggplot2)
 library(econDV)
 econDV::setup_chinese(need2Knit = F)
 rprojroot::is_rstudio_project -> .pj
-.pj$make_fix_file() -> root
+.pj$make_fix_file() -> .root
+
+imageFolder <- file.path(.root(),"img")
+dataFolder <- file.path(.root(),"data")
+
+if(!dir.exists(imageFolder)) dir.create(imageFolder)
+if(!dir.exists(dataFolder)) dir.create(dataFolder)
 ```
 
 ## data
@@ -72,7 +78,7 @@ datadownload = {
   # 下載google drive檔案 share link 到本機project folder, 本以graph4week.csv名稱儲存
   googledrive::drive_download(
     file_in("https://drive.google.com/file/d/18L7z13xz_Rn_bYcQBhZR9wLxGZFgeO9e/view?usp=sharing"),
-    path=file.path(.root(),"graph4week1.csv"),
+    path=file.path(dataFolder,"graph4week1.csv"),
     overwrite = T
   )
   
@@ -96,14 +102,11 @@ myggplot = {
 ## export
 
 ```{r save_ggplot}
-save_ggplot <- {
-  destfile <- file.path(root(), "img/myPlot.svg")
-  destDir <- dirname(destfile)
-  if (!dir.exists(destDir)) dir.create(destDir)
+save_ggplot = {
 
   ggsave(
     plot=myggplot,
-    filename=destfile,
+    filename=file.path(imageFolder, "myPlot.svg"),
     width = 8,
     height = 5
   )
