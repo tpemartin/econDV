@@ -61,15 +61,25 @@ datadownload = {
 
 ## graph
 
+```{r myggplot}
+myggplot = {
+  
+}
+```
 
 ## export
 
 ```{r save_ggplot}
-save_ggplot = {
+save_ggplot <- {
+  destfile <- file.path(root(), "img/myPlot.svg")
+  destDir <- dirname(destfile)
+  if (!dir.exists(destDir)) dir.create(destDir)
+
   ggsave(
-    file.path(.root(), "taiwanEconomicsGrowth.svg"),
-    width=8,
-    height=5
+    plot=myggplot,
+    filename=destfile,
+    width = 8,
+    height = 5
   )
 }
 ```
