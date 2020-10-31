@@ -87,6 +87,11 @@ datadownload = {
 
 ## graph
 
+```{r myggplot}
+myggplot = {
+  
+}
+```
 
 ## export
 
