@@ -84,7 +84,7 @@ datadownload = {
   
   # 自本機project folder裡引入graph4week.csv為graph4week1 data frame物件
   graph4week1 <- read_csv(
-    file.path(.root(),"graph4week1.csv")
+    file.path(dataFolder,"graph4week1.csv")
   )
 }
 

@@ -52,13 +52,13 @@ datadownload = {
   # 下載google drive檔案 share link 到本機project folder, 本以graph4week.csv名稱儲存
   googledrive::drive_download(
     file_in("https://drive.google.com/file/d/18L7z13xz_Rn_bYcQBhZR9wLxGZFgeO9e/view?usp=sharing"),
-    path=file.path(.root(),"graph4week1.csv"),
+    path=file.path(dataFolder,"graph4week1.csv"),
     overwrite = T
   )
   
   # 自本機project folder裡引入graph4week.csv為graph4week1 data frame物件
   graph4week1 <- read_csv(
-    file.path(.root(),"graph4week1.csv")
+    file.path(dataFolder,"graph4week1.csv")
   )
 }
 
